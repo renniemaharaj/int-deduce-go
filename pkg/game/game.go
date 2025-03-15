@@ -10,36 +10,15 @@ import (
 type Game struct {
 	Peek      int             `json:"peek"`
 	Boundary  Boundary        `json:"boundary"`
-	Stepper   iot.Tri         `json:"stepper"`
+	Mode      iot.Tri         `json:"stepper"`
 	Query     IsMoreThanQuery `json:"query"`
 	Logarithm float64         `json:"logarithm"`
 	QueryText string          `json:"query_text"`
 }
 
-// CreateGame function
-func CreateGame() *Game {
-	return &Game{
-		Peek:      200,
-		Stepper:   iot.Spaceless,
-		Logarithm: 777,
-		Query:     IsMoreThanQuery{},
-		Boundary:  Boundary{Start: 0, End: 100}, // Example default range
-	}
-}
-
-// Format query functions
-func formatQueryMoreThan(n *int) string {
-	return "Is your number more than " + PrettyPrintNumber(*n) + "?"
-}
-
-// Format query functions
-func formatQueryIs(n *int) string {
-	return "Is your number " + PrettyPrintNumber(*n) + "?"
-}
-
 // Update query function
 func (g *Game) updateQuery() {
-	switch g.Stepper {
+	switch g.Mode {
 	case iot.Boundless:
 		t := Square(g.Peek)
 		g.QueryText = formatQueryMoreThan(&t)
@@ -65,27 +44,19 @@ func (g *Game) updateQuery() {
 
 // Update function
 func (g *Game) update() {
-	switch g.Stepper {
+	switch g.Mode {
 	case iot.Spaceless:
-		g.Stepper = iot.Boundless
+		g.Mode = iot.Boundless
 
 	case iot.Boundless:
 		if g.Boundary.Confirmed == iot.True {
 			g.Logarithm = Logarithm(g)
-			g.Stepper = iot.Bounded
+			g.Mode = iot.Bounded
 			return
 		}
-
-	case iot.Bounded:
-		if g.Boundary.Spaceless() || g.Boundary.Length() == 1 {
-			if g.Peek == g.Boundary.End {
-				g.Stepper = iot.Spaceless
-				g.Logarithm = 0
-			}
-		} else {
-			g.Logarithm = Logarithm(g)
-		}
 	}
+
+	// Update query
 	g.updateQuery()
 }
 
@@ -100,7 +71,7 @@ func (g *Game) stepUp() {
 func (g *Game) stepDown() {
 	g.Boundary.Confirmed = iot.True
 	g.Boundary.End = g.Query.Term
-	g.Stepper = iot.Bounded
+	g.Mode = iot.Bounded
 }
 
 // Step function

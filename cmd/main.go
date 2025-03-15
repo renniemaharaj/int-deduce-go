@@ -16,7 +16,7 @@ func main() {
 		fmt.Printf("Query: %s\n", g.QueryText)
 		fmt.Printf("Boundary: [%d, %d]\n", g.Boundary.Start, g.Boundary.End)
 		fmt.Printf("Logarithm (Search Steps Remaining): %.2f\n", g.Logarithm)
-		fmt.Printf("Current State: %v\n", g.Stepper)
+		fmt.Printf("Current State: %v\n", g.Mode)
 		fmt.Println("----------------------------")
 		fmt.Println("Respond with '>' (More), '<' (Less), or '/' (Exit):")
 
