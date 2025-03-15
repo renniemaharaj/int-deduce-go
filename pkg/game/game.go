@@ -45,7 +45,7 @@ func (g *Game) update() {
 	g.updateQueryText()
 }
 
-func (g *Game) Move() {
+func (g *Game) Step() {
 	switch g.Query.Confirmed {
 	case iotaTypes.Is:
 		if g.Boundary.Start == g.Query.Term {

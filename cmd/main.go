@@ -11,7 +11,7 @@ func main() {
 	g := game.CreateGame() // Avoid variable shadowing
 
 	for {
-		g.Move()
+		g.Step()
 		fmt.Printf("\n--- Game Status Update ---\n")
 		fmt.Printf("Query: %s\n", g.QueryText)
 		fmt.Printf("Boundary: [%d, %d]\n", g.Boundary.Start, g.Boundary.End)
