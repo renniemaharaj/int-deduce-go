@@ -1,3 +1,34 @@
+/*
+Package game implements a number guessing game using binary search and logarithmic scaling.
+
+The Game struct represents the main game state with the following fields:
+- Peek: Current number being evaluated
+- Boundary: Range limits for the search
+- Mode: Current game state (Spaceless/Boundless/Bounded)
+- Query: Handles the current question state
+- Logarithm: Tracks search progress
+- QueryText: The current question for the player
+
+Core Functions:
+- updateQuery(): Updates the game's current question based on game mode
+- update(): Updates game state and progression
+- stepUp(): Handles progression when number is higher than current guess
+- stepDown(): Handles progression when number is lower than or equal to current guess
+- Step(): Main game progression function that processes player responses
+
+Game Modes:
+- Spaceless: Initial state when the game starts
+- Boundless: Exploring the number space to establish boundaries
+- Bounded: Operating within known boundaries
+
+The game uses a binary search algorithm with logarithmic scaling for efficient number guessing.
+JSON tags are included for serialization compatibility.
+
+Usage:
+    g := game.CreateGame()
+    g.Step() // Advances game state
+    // Process g.QueryText for player input
+*/
 # Int Deduce
 
 A number guessing game implementation in Go that uses binary search and logarithmic scaling to efficiently guess a number that a player is thinking of.
