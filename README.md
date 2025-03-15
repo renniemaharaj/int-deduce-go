@@ -1,4 +1,3 @@
-/*
 Package game implements a number guessing game using binary search and logarithmic scaling.
 
 The Game struct represents the main game state with the following fields:
