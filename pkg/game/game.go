@@ -50,11 +50,13 @@ func (g *Game) update() {
 
 	case iot.Boundless:
 		if g.Boundary.Confirmed == iot.True {
-			g.Logarithm = Logarithm(g)
+
 			g.Mode = iot.Bounded
 			return
 		}
 	}
+
+	g.Logarithm = Logarithm(g)
 
 	// Update query
 	g.updateQuery()
@@ -64,7 +66,13 @@ func (g *Game) update() {
 func (g *Game) stepUp() {
 	g.Peek = int(math.Max(float64(g.Query.Term), 1))
 	g.Boundary.Start = g.Query.Term
-	g.Query.Set(g.Boundary.Mean(), iot.Neither)
+
+	iotV := iot.Boundless
+	if g.Boundary.Confirmed == iot.True {
+		iotV = iot.Bounded
+	}
+
+	g.Query.Set(g.Boundary.Mean(), iotV)
 }
 
 // Step down function
