@@ -1,9 +1,9 @@
-package iotaTypes
+package iot
 
 type Tri int
 
 const (
 	None Tri = iota
-	Is
-	Not
+	True
+	False
 )

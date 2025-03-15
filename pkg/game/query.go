@@ -1,7 +1,7 @@
 package game
 
 import (
-	iotaTypes "github.com/renniemaharaj/int-deduce-go/pkg/iotaTypes"
+	iotaTypes "github.com/renniemaharaj/int-deduce-go/pkg/iot"
 )
 
 type IsMoreThanQuery struct {

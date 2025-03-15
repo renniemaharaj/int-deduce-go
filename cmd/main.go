@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/renniemaharaj/int-deduce-go/pkg/game"
-	"github.com/renniemaharaj/int-deduce-go/pkg/iotaTypes"
+	"github.com/renniemaharaj/int-deduce-go/pkg/iot"
 )
 
 func main() {
@@ -16,7 +16,7 @@ func main() {
 		fmt.Printf("Query: %s\n", g.QueryText)
 		fmt.Printf("Boundary: [%d, %d]\n", g.Boundary.Start, g.Boundary.End)
 		fmt.Printf("Logarithm (Search Steps Remaining): %.2f\n", g.Logarithm)
-		fmt.Printf("Current State: %v\n", g.State)
+		fmt.Printf("Current State: %v\n", g.Stepper)
 		fmt.Println("----------------------------")
 		fmt.Println("Respond with '>' (More), '<' (Less), or '/' (Exit):")
 
@@ -29,9 +29,9 @@ func main() {
 
 		switch response {
 		case ">":
-			g.Query.SetConfirmed(iotaTypes.Is)
+			g.Query.SetConfirmed(iot.MoreThan)
 		case "<":
-			g.Query.SetConfirmed(iotaTypes.Not)
+			g.Query.SetConfirmed(iot.LessThanOrEqual)
 		case "/":
 			fmt.Println("Game exited.")
 			return

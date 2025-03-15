@@ -6,7 +6,7 @@ import (
 )
 
 func Square(n int) int {
-	val := math.Max(float64(n*n), 2)
+	val := n * n
 	return int(val)
 }
 
@@ -18,7 +18,6 @@ func Logarithm(g *Game) float64 {
 	rangeSize := float64(g.Boundary.End - g.Boundary.Start)
 
 	log := math.Log2(rangeSize) // Ensures log(0) is handled safely
-	fmt.Println("Logarithm: ", log)
 	return math.Max(log, 0)
 
 }
