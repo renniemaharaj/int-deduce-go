@@ -6,6 +6,7 @@ import (
 	iot "github.com/renniemaharaj/int-deduce-go/pkg/iot"
 )
 
+// Game struct
 type Game struct {
 	Peek      int             `json:"peek"`
 	Boundary  Boundary        `json:"boundary"`
@@ -15,6 +16,7 @@ type Game struct {
 	QueryText string          `json:"query_text"`
 }
 
+// CreateGame function
 func CreateGame() *Game {
 	return &Game{
 		Peek:      200,
@@ -25,30 +27,43 @@ func CreateGame() *Game {
 	}
 }
 
+// Format query functions
+func formatQueryMoreThan(n *int) string {
+	return "Is your number more than " + PrettyPrintNumber(*n) + "?"
+}
+
+// Format query functions
+func formatQueryIs(n *int) string {
+	return "Is your number " + PrettyPrintNumber(*n) + "?"
+}
+
+// Update query function
 func (g *Game) updateQuery() {
 	switch g.Stepper {
 	case iot.Boundless:
 		t := Square(g.Peek)
-		g.QueryText = "Is your number more than " + PrettyPrintNumber(t) + "?"
+		g.QueryText = formatQueryMoreThan(&t)
 		g.Query.Set(t, iot.Neither)
 
 	case iot.Bounded:
 		if g.Boundary.Length() == 1 || g.Boundary.Spaceless() {
 			if g.Query.Term == g.Boundary.Start {
-				g.QueryText = "Is your number " + PrettyPrintNumber(g.Boundary.End) + "?"
-				g.Query.Set(g.Boundary.Start, iot.Neither)
+				// Works in both cases due to step down side effect
+				g.QueryText = formatQueryIs(&g.Boundary.End)
+				g.Query.Set(g.Boundary.End, iot.Neither)
 			} else {
-				g.QueryText = "Is your number more than " + PrettyPrintNumber(g.Boundary.Start) + "?"
+				g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
 				g.Query.Set(g.Boundary.Start, iot.Neither)
 			}
 			break
 		}
 		t := g.Boundary.Mean()
-		g.QueryText = "Is your number more than " + PrettyPrintNumber(t) + "?"
+		g.QueryText = formatQueryMoreThan(&t)
 		g.Query.Set(t, iot.Neither)
 	}
 }
 
+// Update function
 func (g *Game) update() {
 	switch g.Stepper {
 	case iot.Spaceless:
@@ -58,7 +73,7 @@ func (g *Game) update() {
 		if g.Boundary.Confirmed == iot.True {
 			g.Logarithm = Logarithm(g)
 			g.Stepper = iot.Bounded
-			return // Prevent infinite recursion
+			return
 		}
 
 	case iot.Bounded:
@@ -74,17 +89,30 @@ func (g *Game) update() {
 	g.updateQuery()
 }
 
+// Step up function
+func (g *Game) stepUp() {
+	g.Peek = int(math.Max(float64(g.Query.Term), 1))
+	g.Boundary.Start = g.Query.Term
+	g.Query.Set(g.Boundary.Mean(), iot.Neither)
+}
+
+// Step down function
+func (g *Game) stepDown() {
+	g.Boundary.Confirmed = iot.True
+	g.Boundary.End = g.Query.Term
+	g.Stepper = iot.Bounded
+}
+
+// Step function
 func (g *Game) Step() {
 	switch g.Query.Confirmed {
 	case iot.MoreThan:
-		g.Peek = int(math.Max(float64(g.Peek+1), 1))
-		g.Boundary.Start = g.Query.Term
-		g.Query.Set(g.Boundary.Mean(), iot.Neither)
+		g.stepUp()
 
 	case iot.LessThanOrEqual:
-		g.Boundary.Confirmed = iot.True
-		g.Boundary.End = g.Query.Term
-		g.Stepper = iot.Bounded
+		g.stepDown()
 	}
+
+	// Update game state
 	g.update()
 }
