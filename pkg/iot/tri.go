@@ -3,7 +3,7 @@ package iot
 type Tri int
 
 const (
-	_ Tri = iota
+	Unset Tri = iota
 	True
 	False
 )

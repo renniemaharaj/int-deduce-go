@@ -28,7 +28,7 @@ func (g *Game) updateQuery() {
 // Update function
 func (g *Game) update() {
 	switch *g.State {
-	case iot.Spaceless:
+	case iot.Unset:
 		*g.State = iot.Boundless
 
 	case iot.Boundless:

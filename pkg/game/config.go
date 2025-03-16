@@ -6,7 +6,7 @@ import "github.com/renniemaharaj/int-deduce-go/pkg/iot"
 func CreateGame() *Game {
 	peak := 20
 	var logarithm float64 = 777
-	state := iot.Spaceless
+	state := iot.Unset
 
 	return &Game{
 		Peek:      &peak,

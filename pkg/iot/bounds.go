@@ -1,7 +1,7 @@
 package iot
 
 const (
-	Spaceless Tri = iota
+	_ Tri = iota
 	Boundless
 	Bounded
 )

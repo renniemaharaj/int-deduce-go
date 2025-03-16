@@ -28,26 +28,26 @@ func Logarithm(g *Game) float64 {
 func QueryBoundless(g *Game) {
 	t := Square(*g.Peek)
 	g.QueryText = formatQueryMoreThan(&t)
-	g.Query.Set(t, iot.Spaceless)
+	g.Query.Set(t, iot.Unset)
 }
 
 // Query bounded function
 func QueryBounded(g *Game) {
 	if g.Boundary.Length() == 1 {
 		g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
-		g.Query.Set(g.Boundary.Start, iot.Spaceless)
+		g.Query.Set(g.Boundary.Start, iot.Unset)
 		return
 	}
 
 	if g.Boundary.Spaceless() {
 		g.QueryText = formatQueryIs(&g.Boundary.Start)
-		g.Query.Set(g.Boundary.Start, iot.Spaceless)
+		g.Query.Set(g.Boundary.Start, iot.Unset)
 		return
 	}
 
 	t := g.Boundary.Mean()
 	g.QueryText = formatQueryMoreThan(&t)
-	g.Query.Set(t, iot.Spaceless)
+	g.Query.Set(t, iot.Unset)
 }
 
 func PrettyPrintNumber(n int) string {
