@@ -3,6 +3,8 @@ package game
 import (
 	"fmt"
 	"math"
+
+	"github.com/renniemaharaj/int-deduce-go/pkg/iot"
 )
 
 func Square(n int) int {
@@ -20,6 +22,32 @@ func Logarithm(g *Game) float64 {
 	log := math.Log2(rangeSize) // Ensures log(0) is handled safely
 	return math.Max(log, 0)
 
+}
+
+// Query boundless function
+func QueryBoundless(g *Game) {
+	t := Square(*g.Peek)
+	g.QueryText = formatQueryMoreThan(&t)
+	g.Query.Set(t, iot.Spaceless)
+}
+
+// Query bounded function
+func QueryBounded(g *Game) {
+	if g.Boundary.Length() == 1 {
+		g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
+		g.Query.Set(g.Boundary.Start, iot.Spaceless)
+		return
+	}
+
+	if g.Boundary.Spaceless() {
+		g.QueryText = formatQueryIs(&g.Boundary.Start)
+		g.Query.Set(g.Boundary.Start, iot.Spaceless)
+		return
+	}
+
+	t := g.Boundary.Mean()
+	g.QueryText = formatQueryMoreThan(&t)
+	g.Query.Set(t, iot.Spaceless)
 }
 
 func PrettyPrintNumber(n int) string {

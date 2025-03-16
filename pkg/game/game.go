@@ -18,26 +18,10 @@ type Game struct {
 func (g *Game) updateQuery() {
 	switch *g.State {
 	case iot.Boundless:
-		t := Square(*g.Peek)
-		g.QueryText = formatQueryMoreThan(&t)
-		g.Query.Set(t, iot.Spaceless)
+		QueryBoundless(g)
 
 	case iot.Bounded:
-		if g.Boundary.Length() == 1 {
-			g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
-			g.Query.Set(g.Boundary.Start, iot.Spaceless)
-			break
-		}
-
-		if g.Boundary.Spaceless() {
-			g.QueryText = formatQueryIs(&g.Boundary.Start)
-			g.Query.Set(g.Boundary.Start, iot.Spaceless)
-			break
-		}
-
-		t := g.Boundary.Mean()
-		g.QueryText = formatQueryMoreThan(&t)
-		g.Query.Set(t, iot.Spaceless)
+		QueryBounded(g)
 	}
 }
 
@@ -69,7 +53,6 @@ func (g *Game) up() {
 
 // Step down function
 func (g *Game) down() {
-	g.Boundary.Confirmed = iot.True
 	g.Boundary.End = g.Query.Term
 	*g.State = iot.Bounded
 }
@@ -81,6 +64,7 @@ func (g *Game) Step() {
 		g.up()
 
 	case iot.LesserOr:
+		g.Boundary.Confirmed = iot.True
 		g.down()
 	}
 
