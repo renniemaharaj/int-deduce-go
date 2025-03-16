@@ -8,8 +8,8 @@ type Boundary struct {
 	Confirmed iot.Tri `json:"confirmed"`
 }
 
-func (b *Boundary) SetConfirmed(c iot.Tri) {
-	b.Confirmed = c
+func (b *Boundary) SetConfirmed(c *iot.Tri) {
+	b.Confirmed = *c
 }
 
 func (b *Boundary) Set(start, end int) {

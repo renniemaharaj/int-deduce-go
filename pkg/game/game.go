@@ -1,26 +1,24 @@
 package game
 
 import (
-	"math"
-
 	iot "github.com/renniemaharaj/int-deduce-go/pkg/iot"
 )
 
 // Game struct
 type Game struct {
-	Peek      int             `json:"peek"`
-	Boundary  Boundary        `json:"boundary"`
-	Mode      iot.Tri         `json:"stepper"`
-	Query     IsMoreThanQuery `json:"query"`
-	Logarithm float64         `json:"logarithm"`
-	QueryText string          `json:"query_text"`
+	Peek      *int      `json:"peek"`
+	Boundary  *Boundary `json:"boundary"`
+	State     *iot.Tri  `json:"stepper"`
+	Query     *Query    `json:"query"`
+	Logarithm *float64  `json:"logarithm"`
+	QueryText string    `json:"query_text"`
 }
 
 // Update query function
 func (g *Game) updateQuery() {
-	switch g.Mode {
+	switch *g.State {
 	case iot.Boundless:
-		t := Square(g.Peek)
+		t := Square(*g.Peek)
 		g.QueryText = formatQueryMoreThan(&t)
 		g.Query.Set(t, iot.Neither)
 
@@ -44,52 +42,45 @@ func (g *Game) updateQuery() {
 
 // Update function
 func (g *Game) update() {
-	switch g.Mode {
+	switch *g.State {
 	case iot.Spaceless:
-		g.Mode = iot.Boundless
+		*g.State = iot.Boundless
 
 	case iot.Boundless:
 		if g.Boundary.Confirmed == iot.True {
 
-			g.Mode = iot.Bounded
+			*g.State = iot.Bounded
 			return
 		}
 	}
 
-	g.Logarithm = Logarithm(g)
+	*g.Logarithm = Logarithm(g)
 
 	// Update query
 	g.updateQuery()
 }
 
 // Step up function
-func (g *Game) stepUp() {
-	g.Peek = int(math.Max(float64(g.Query.Term), 1))
+func (g *Game) stepIn() {
+	*g.Peek = g.Query.Term
 	g.Boundary.Start = g.Query.Term
-
-	iotV := iot.Boundless
-	if g.Boundary.Confirmed == iot.True {
-		iotV = iot.Bounded
-	}
-
-	g.Query.Set(g.Boundary.Mean(), iotV)
 }
 
 // Step down function
-func (g *Game) stepDown() {
+func (g *Game) stepOut() {
 	g.Boundary.Confirmed = iot.True
 	g.Boundary.End = g.Query.Term
-	g.Mode = iot.Bounded
+	*g.State = iot.Bounded
 }
 
 // Step function
 func (g *Game) Step() {
 	switch g.Query.Confirmed {
 	case iot.MoreThan:
-		g.stepUp()
+		g.stepIn()
 
 	case iot.LessThanOrEqual:
-		g.stepDown()
+		g.stepOut()
 	}
 
 	// Update game state
