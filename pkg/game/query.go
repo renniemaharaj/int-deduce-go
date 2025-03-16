@@ -1,20 +1,20 @@
 package game
 
 import (
-	iotaTypes "github.com/renniemaharaj/int-deduce-go/pkg/iot"
+	"github.com/renniemaharaj/int-deduce-go/pkg/iot"
 )
 
 type Query struct {
-	Term      int           `json:"term"`
-	Confirmed iotaTypes.Tri `json:"confirmed"`
+	Term      int     `json:"term"`
+	Confirmed iot.Tri `json:"confirmed"`
 }
 
-func (q *Query) Set(term int, c iotaTypes.Tri) {
+func (q *Query) Set(term int, c iot.Tri) {
 	q.Term = term
 	q.Confirmed = c
 }
 
-func (q *Query) SetConfirmed(s iotaTypes.Tri) {
+func (q *Query) SetConfirmed(s iot.Tri) {
 	q.Confirmed = s
 }
 
