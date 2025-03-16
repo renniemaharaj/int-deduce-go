@@ -21,7 +21,7 @@ func main() {
 		fmt.Printf("Query: %s\n", g.QueryText)
 		fmt.Printf("Boundary: (%v, %v)\n", game.PrettyPrintNumber(g.Boundary.Start), game.PrettyPrintNumber(g.Boundary.End))
 		fmt.Printf("Logarithm (Search Steps Remaining): %.2f\n", *g.Logarithm)
-		fmt.Printf("Current State: %v\n", g.State)
+		fmt.Printf("Current State: %v\n", *g.State)
 		fmt.Println("----------------------------")
 		fmt.Println("Respond with '>' (More), '<' (Less), or '/' (Exit):")
 

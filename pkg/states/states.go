@@ -24,28 +24,15 @@ func (t States) ToInt() int {
 	case True:
 		return 1
 	case False:
-		return 0
+		return 2
 	default:
-		return -1
+		return 0
 	}
 }
 
 // IsSet checks whether the value is explicitly True or False.
 func (t States) IsSet() bool {
 	return t != Unset
-}
-
-// Toggle flips the state between True and False.
-// If Unset, it defaults to True.
-func (t *States) Toggle() {
-	switch *t {
-	case True:
-		*t = False
-	case False:
-		*t = True
-	default:
-		*t = True
-	}
 }
 
 // Unset resets the value to the Unset state.
