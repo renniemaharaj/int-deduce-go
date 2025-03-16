@@ -1,7 +1,7 @@
 package iot
 
 const (
-	Neither Tri = iota
-	MoreThan
-	LessThanOrEqual
+	_ Tri = iota
+	Greater
+	LesserOr
 )

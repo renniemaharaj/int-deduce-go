@@ -4,7 +4,7 @@ import "github.com/renniemaharaj/int-deduce-go/pkg/iot"
 
 // CreateGame function
 func CreateGame() *Game {
-	peak := 200
+	peak := 20
 	var logarithm float64 = 777
 	state := iot.Spaceless
 
@@ -13,6 +13,6 @@ func CreateGame() *Game {
 		State:     &state,
 		Logarithm: &logarithm,
 		Query:     &Query{},
-		Boundary:  &Boundary{Start: 0, End: 100}, // Example default range
+		Boundary:  &Boundary{Start: 0, End: 0}, // Example default range
 	}
 }

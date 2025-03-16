@@ -7,26 +7,26 @@ A number guessing game implementation in Go that uses binary search and logarith
 Package game implements a number guessing game using binary search and logarithmic scaling.
 
 The Game struct represents the main game state with the following fields:
-- `Peek`: Current number being evaluated
-- `Boundary`: Range limits for the search
-- `Mode`: Current game state (Spaceless/Boundless/Bounded)
-- `Query`: Handles the current question state
-- `Logarithm`: Tracks search progress
-- `QueryText`: The current question for the player
+- `Peek`: Current number being evaluated (pointer to int)
+- `Boundary`: Range limits for the search (pointer to Boundary)
+- `State`: Current game state using iot.Tri (Spaceless/Boundless/Bounded)
+- `Query`: Handles the current question state (pointer to Query)
+- `Logarithm`: Tracks search progress (pointer to float64)
+- `QueryText`: The current question for the player (string)
 
-## Game Modes
+## Game States
 
 - **Spaceless**: Initial state when the game starts
 - **Boundless**: Exploring the number space to establish boundaries
-- **Bounded**: Operating within known boundaries
+- **Bounded**: Operating within known boundaries using binary search
 
 ## Core Functions
 
-- `updateQuery()`: Updates the game's current question based on game mode
-- `update()`: Updates game state and progression
-- `stepUp()`: Handles progression when number is higher than current guess
-- `stepDown()`: Handles progression when number is lower than or equal to current guess
-- `Step()`: Main game progression function that processes player responses
+- `updateQuery()`: Updates game's question based on current state and boundary conditions
+- `update()`: Manages state transitions and logarithmic progression
+- `up()`: Updates game state when number is higher than current guess
+- `down()`: Updates game state when number is lower than or equal to current guess
+- `Step()`: Main game progression function handling player responses
 
 ## Installation
 
@@ -48,8 +48,10 @@ func main() {
 
 ## Features
 
-- Binary search algorithm with logarithmic scaling
+- Binary search with logarithmic scaling
 - Dynamic boundary adjustment
 - JSON serialization support
-- Pretty number formatting
-- Efficient number guessing strategy
+- State management using iot.Tri type
+- Smart question formatting
+- Efficient number space exploration
+

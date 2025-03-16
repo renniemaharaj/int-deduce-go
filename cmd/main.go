@@ -19,7 +19,7 @@ func main() {
 		g.Step()
 		fmt.Printf("\n--- Game Status Update ---\n")
 		fmt.Printf("Query: %s\n", g.QueryText)
-		fmt.Printf("Boundary: [%v, %v]\n", game.PrettyPrintNumber(g.Boundary.Start), game.PrettyPrintNumber(g.Boundary.End))
+		fmt.Printf("Boundary: (%v, %v)\n", game.PrettyPrintNumber(g.Boundary.Start), game.PrettyPrintNumber(g.Boundary.End))
 		fmt.Printf("Logarithm (Search Steps Remaining): %.2f\n", *g.Logarithm)
 		fmt.Printf("Current State: %v\n", *g.State)
 		fmt.Println("----------------------------")
@@ -34,9 +34,9 @@ func main() {
 
 		switch response {
 		case ">":
-			g.Query.SetConfirmed(iot.MoreThan)
+			g.Query.SetConfirmed(iot.Greater)
 		case "<":
-			g.Query.SetConfirmed(iot.LessThanOrEqual)
+			g.Query.SetConfirmed(iot.LesserOr)
 		case "/":
 			fmt.Println("Game exited.")
 			return

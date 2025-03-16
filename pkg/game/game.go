@@ -20,23 +20,24 @@ func (g *Game) updateQuery() {
 	case iot.Boundless:
 		t := Square(*g.Peek)
 		g.QueryText = formatQueryMoreThan(&t)
-		g.Query.Set(t, iot.Neither)
+		g.Query.Set(t, iot.Spaceless)
 
 	case iot.Bounded:
-		if g.Boundary.Length() == 1 || g.Boundary.Spaceless() {
-			if g.Query.Term == g.Boundary.Start {
-				// Works in both cases due to step down side effect
-				g.QueryText = formatQueryIs(&g.Boundary.End)
-				g.Query.Set(g.Boundary.End, iot.Neither)
-			} else {
-				g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
-				g.Query.Set(g.Boundary.Start, iot.Neither)
-			}
+		if g.Boundary.Length() == 1 {
+			g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
+			g.Query.Set(g.Boundary.Start, iot.Spaceless)
 			break
 		}
+
+		if g.Boundary.Spaceless() {
+			g.QueryText = formatQueryIs(&g.Boundary.Start)
+			g.Query.Set(g.Boundary.Start, iot.Spaceless)
+			break
+		}
+
 		t := g.Boundary.Mean()
 		g.QueryText = formatQueryMoreThan(&t)
-		g.Query.Set(t, iot.Neither)
+		g.Query.Set(t, iot.Spaceless)
 	}
 }
 
@@ -61,13 +62,13 @@ func (g *Game) update() {
 }
 
 // Step up function
-func (g *Game) stepIn() {
+func (g *Game) up() {
 	*g.Peek = g.Query.Term
-	g.Boundary.Start = g.Query.Term
+	g.Boundary.Start = g.Query.Term + 1
 }
 
 // Step down function
-func (g *Game) stepOut() {
+func (g *Game) down() {
 	g.Boundary.Confirmed = iot.True
 	g.Boundary.End = g.Query.Term
 	*g.State = iot.Bounded
@@ -76,11 +77,11 @@ func (g *Game) stepOut() {
 // Step function
 func (g *Game) Step() {
 	switch g.Query.Confirmed {
-	case iot.MoreThan:
-		g.stepIn()
+	case iot.Greater:
+		g.up()
 
-	case iot.LessThanOrEqual:
-		g.stepOut()
+	case iot.LesserOr:
+		g.down()
 	}
 
 	// Update game state
