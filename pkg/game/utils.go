@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 
-	"github.com/renniemaharaj/int-deduce-go/pkg/iot"
+	"github.com/renniemaharaj/int-deduce-go/pkg/states"
 )
 
 func Square(n int) int {
@@ -28,26 +28,26 @@ func Logarithm(g *Game) float64 {
 func QueryBoundless(g *Game) {
 	t := Square(*g.Peek)
 	g.QueryText = formatQueryMoreThan(&t)
-	g.Query.Set(t, iot.Unset)
+	g.Query.Set(t, states.Unset)
 }
 
 // Query bounded function
 func QueryBounded(g *Game) {
 	if g.Boundary.Length() == 1 {
 		g.QueryText = formatQueryMoreThan(&g.Boundary.Start)
-		g.Query.Set(g.Boundary.Start, iot.Unset)
+		g.Query.Set(g.Boundary.Start, states.Unset)
 		return
 	}
 
 	if g.Boundary.Spaceless() {
 		g.QueryText = formatQueryIs(&g.Boundary.Start)
-		g.Query.Set(g.Boundary.Start, iot.Unset)
+		g.Query.Set(g.Boundary.Start, states.Unset)
 		return
 	}
 
 	t := g.Boundary.Mean()
 	g.QueryText = formatQueryMoreThan(&t)
-	g.Query.Set(t, iot.Unset)
+	g.Query.Set(t, states.Unset)
 }
 
 func PrettyPrintNumber(n int) string {

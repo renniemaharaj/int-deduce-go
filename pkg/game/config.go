@@ -1,12 +1,12 @@
 package game
 
-import "github.com/renniemaharaj/int-deduce-go/pkg/iot"
+import "github.com/renniemaharaj/int-deduce-go/pkg/states"
 
 // CreateGame function
 func CreateGame() *Game {
 	peak := 20
 	var logarithm float64 = 777
-	state := iot.Unset
+	state := states.Unset
 
 	return &Game{
 		Peek:      &peak,

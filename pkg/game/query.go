@@ -1,20 +1,20 @@
 package game
 
 import (
-	"github.com/renniemaharaj/int-deduce-go/pkg/iot"
+	"github.com/renniemaharaj/int-deduce-go/pkg/states"
 )
 
 type Query struct {
-	Term      int     `json:"term"`
-	Confirmed iot.Tri `json:"confirmed"`
+	Term      int           `json:"term"`
+	Confirmed states.States `json:"confirmed"`
 }
 
-func (q *Query) Set(term int, c iot.Tri) {
+func (q *Query) Set(term int, c states.States) {
 	q.Term = term
 	q.Confirmed = c
 }
 
-func (q *Query) SetConfirmed(s iot.Tri) {
+func (q *Query) SetConfirmed(s states.States) {
 	q.Confirmed = s
 }
 
